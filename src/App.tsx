@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { fetchTracks } from './lib/fetchTracks';
 import { useQuery } from '@tanstack/react-query';
 
-
 const trackUrls = [
   'https://p.scdn.co/mp3-preview/742294f35af9390e799dd96c633788410a332e52',
   'https://p.scdn.co/mp3-preview/5a12483aa3b51331aba663131dbac967ccb33d99',
@@ -23,8 +22,11 @@ const App = () => {
     queryKey: ['tracks'],
     queryFn: fetchTracks,
   });
-
-  console.log(tracks)
+  const AlbumCover = ({}) => {
+    const src = tracks?.[0]?.track?.album?.images[0]?.url;
+    return <img src={src} style={{ width: 400, height: 400 }} />;
+  };
+  console.log(tracks);
   console.log(tracks?.length);
   return (
     <div className="App">
@@ -33,11 +35,15 @@ const App = () => {
         <h1 className="App-title">Bienvenue sur le blind test</h1>
       </header>
       <div className="App-images">
-        <p>{tracks[0]?.track.name}</p>
+        <AlbumCover track={tracks?.[0]?.track} />
+        <p>{tracks?.[0]?.track.name}</p>
       </div>
       <div className="App-buttons"></div>
-      <audio src={trackUrls[trackIndex]} autoPlay controls />
-      <button onClick={goToNextTrack}>Next track</button>
+      <audio src={tracks?.[1]?.track?.preview_url} autoPlay controls />
+      <button>{tracks?.[0]?.track.name}</button>
+      <button>{tracks?.[1]?.track.name}</button>
+      <button>{tracks?.[2]?.track.name}</button>
+      <button onClick={goToNextTrack}>Next Track</button>
     </div>
   );
 };
